@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import Money from 'money-works';
 import * as Progress from 'react-native-progress';
 
+const midas = amt => {
+  return new Money(amt, 'USD').toString();
+}
+
 class Job extends Component {
   state = {
     currencyEarned: 0,
@@ -61,13 +65,14 @@ class Job extends Component {
 
   render() {
     const buttonStyles = this.state.disabled ? styles.disabled : {};
+
     return (
       <View>
         <Text>Static Web Page</Text>
         <Text>Pages built: {this.state.jobsComplete}</Text>
-        <Text>Cost ${this.state.cost}</Text>
-        <Text>Salary: {this.state.reward}</Text>
-        <Progress.Bar progress={this.state.progress} width={200} animated={this.state.animated} />
+        <Text>Cost ${midas(this.state.cost)}</Text>
+        <Text>Salary: ${midas(this.state.reward)}</Text>
+        <Progress.Bar progress={this.state.progress} width={200} animated={this.state.animated} indeterminate={this.state.disabled}/>
         <Button
           onPress={() => this.runProcess('lvl1')}
           disabled={this.state.disabled}
