@@ -1,4 +1,4 @@
-# $$$Tap Money$$$
+# Tap Money
 
 A mobile, cross-platform incremental game. Complete jobs and earn Money! Use your money to buy more jobs and earn more money! Totally not a ripoff of any other game!
 
@@ -18,9 +18,9 @@ Feel free to contribute. Especially in the visual department. This project is ju
 
 ## Authors
 
-* **Nicholas Smith** - *Initial work* - [DreamLine](https://dreamlinestudios.com)
+* **Nicholas Smith** - [DreamLine](https://dreamlinestudios.com)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/nicholaspsmith/TapMoney/contributors) who participated in this project.
 
 ## License
 
