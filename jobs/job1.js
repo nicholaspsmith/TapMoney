@@ -15,7 +15,27 @@ export default class Job extends Component {
     disabled: false,
     animated: true,
     timeToComplete: 2500,
+    start: null,
+    elapsed: 0,
   };
+
+  startTimer = async (start) => {
+    await this.setState({ start })
+    this.timer = setInterval(this.tick, 50);
+  }
+
+  clearTimer = async () => {
+    clearInterval(this.timer);
+    await this.setState({ animated: false });
+    await this.setState({ progress: 0 });
+    await this.setState({ animated: true });
+  }
+
+  tick = async () => {
+    const diffInMillis = new Date() - this.state.start
+    const progress = diffInMillis / this.state.timeToComplete
+    await this.setState({ progress })
+  }
 
   haveEnoughCurrency() {
     return this.props.globalCurrency > this.state.cost
@@ -49,16 +69,15 @@ export default class Job extends Component {
     const globalCurrencyAmount = this.props.globalCurrency - this.state.cost;
     this.props.setGlobalCurrency(globalCurrencyAmount);
 
-    this.setState({ progress: 1 });
-
-    let jobsComplete = 0;
-
+    let jobsComplete;
+    this.startTimer(new Date())
     await setTimeout(() => {
       const currencyEarned = this.state.currencyEarned + this.state.reward;
       jobsComplete = this.state.jobsComplete + 1;
-      this.setState({ currencyEarned, jobsComplete, progress: 0, disabled: false });
+      this.setState({ currencyEarned, jobsComplete, disabled: false });
       const newGlobalCurrency = this.props.globalCurrency + this.state.reward;
       this.props.setGlobalCurrency(newGlobalCurrency);
+      this.clearTimer()
     }, this.state.timeToComplete);
 
     this.checkForUpgrades(jobsComplete)
@@ -66,14 +85,20 @@ export default class Job extends Component {
 
   render() {
     const { textstyle, viewStyle } = styles;
+
     return (
       <View style={viewStyle}>
         <Text style={textstyle}>Sell Book</Text>
         <Text style={textstyle}>Units Sold: {this.state.jobsComplete}</Text>
         <Text style={textstyle}>Cost ${midas(this.state.cost)}</Text>
         <Text style={textstyle}>Profit: ${midas(this.state.reward)}</Text>
-        <Progress.Bar progress={this.state.progress} width={200} animated={this.state.animated} indeterminate={this.state.disabled}/>
-        <Button
+        <Progress.Bar
+          progress={this.state.progress}
+          width={200}
+          animated={this.state.animated}
+          animationConfig={{ bounciness: 0 }}
+        />
+       <Button
           onPress={() => this.runProcess()}
           disabled={this.state.disabled}
           title="Tap!"

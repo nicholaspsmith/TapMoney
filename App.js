@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   body: {
-    flex: 3,
+    flex: 7,
     backgroundColor: 'white',
   },
 });
